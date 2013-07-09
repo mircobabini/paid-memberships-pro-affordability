@@ -5,7 +5,7 @@
  * Description: Defines affordability for downloadable Files placing levels on Pages and single Files
  *
  * Plugin URI: 
- * Version: 1.0.1
+ * Version: 1.0.2
  *
  * Author: Mirco Babini
  * Author URI: http://mircobabini.com/
@@ -44,7 +44,7 @@ class paid_memberships_pro_affordability_plugin {
 	/**
 	 * This plugin's version
 	 */
-	const VERSION = '1.0.1';
+	const VERSION = '1.0.2';
 
 	/**
 	 * This plugin's table name prefix
