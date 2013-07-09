@@ -146,18 +146,7 @@ class paid_memberships_pro_affordability_plugin_admin extends paid_memberships_p
 	public function deactivate() {
 		global $wpdb;
 
-		$prior_error_setting = $wpdb->show_errors;
 		$wpdb->show_errors = false;
-		$denied = 'command denied to user';
-
-		$wpdb->query("DROP TABLE `$this->table_login`");
-		if ($wpdb->last_error) {
-			if (strpos($wpdb->last_error, $denied) === false) {
-				die($wpdb->last_error);
-			}
-		}
-
-		$wpdb->show_errors = $prior_error_setting;
 
 		$package_id = self::ID;
 		$wpdb->escape_by_ref($package_id);

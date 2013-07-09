@@ -52,7 +52,6 @@ class paid_memberships_pro_affordability_plugin {
 	 */
 	protected $prefix = 'paid_memberships_pro_affordability';
 
-
 	/**
 	 * Has the internationalization text domain been loaded?
 	 * @var bool
@@ -86,18 +85,6 @@ class paid_memberships_pro_affordability_plugin {
 	 * @var string
 	 */
 	protected $option_name;
-
-	/**
-	 * Name, with $table_prefix, of the table tracking login failures
-	 * @var string
-	 */
-	protected $table_login;
-
-	/**
-	 * Our usermeta key for tracking when a user logged in
-	 * @var string
-	 */
-	protected $umk_login_time;
 
 
 	/**
@@ -148,18 +135,31 @@ class paid_memberships_pro_affordability_plugin {
 				setcookie('localphone', $localphone, time()+3600);
 			}
 		}
-		add_action( 'template_redirect', function () {
+		
+		$cookiekey = 'redirect_to_bought';
+		
+		// best hook to perform a redirect
+		add_action( 'template_redirect', function () use ($cookiekey) {
 			if (is_page (pmpro_getOption("checkout_page_id"))) {
 				$level = @$_GET['level'];
+				
 				if (pmpro_hasMembershipLevel ($level)) {
-					wp_safe_redirect ('/');
+					if (isset ($_COOKIE[$cookiekey])) {
+						wp_safe_redirect ($_COOKIE[$cookiekey]);
+					} else {
+						wp_safe_redirect ('/');
+					}
 				}
 				
-				if (isset ($_GET['redirect_to_bought'])) {
-					setcookie ('redirect_to_bought', $_GET['redirect_to_bought'], time()+3600, COOKIEPATH, COOKIE_DOMAIN, false);
+				if (isset ($_GET[$cookiekey])) {
+					setcookie ($cookiekey, $_GET[$cookiekey], time()+3600, COOKIEPATH, COOKIE_DOMAIN, false);
 				}
 			} else if (is_page (pmpro_getOption("levels_page_id"))) {
-				wp_safe_redirect ('/');
+				if (isset ($_COOKIE[$cookiekey])) {
+					wp_safe_redirect ($_COOKIE[$cookiekey]);
+				} else {
+					wp_safe_redirect ('/');
+				}
 			}
 		});
 
